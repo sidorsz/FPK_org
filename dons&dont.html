@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Donasi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/17.3.1/lazyload.min.js"></script>
+
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            cursor: none;
+            /* Hide the default cursor */
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Lobster Two', cursive;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #ec5408;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #ec5408;
+            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .donor-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slider-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .donor-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .donor-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .donor-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+        }
+
+        .donor-card:hover .donor-img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .donor-card h4 {
+            font-size: 1.5rem;
+            color: #6a4a3a;
+            margin-top: 15px;
+        }
+
+        .donor-card p {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        #back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            background-color: #ec5408;
+            color: white;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #back-to-top:hover {
+            background-color: #555;
+        }
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 100;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            /* Could be more or less, depending on screen size */
+            max-width: 600px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .cursor {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ec5408;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            animation: cursorAnimation 0.5s ease-out forwards;
+        }
+
+        @keyframes cursorAnimation {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(2);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="particleCanvas"></canvas>
+
+    <div style="position: fixed; top: 0; left: 0; z-index: 50; pointer-events: none; width: 100%; height: 100%;">
+        <canvas id="fluid" style="width: 100vw; height: 100vh; display: block;"></canvas>
+    </div>
+
+    <h1 data-aos="fade-up">Terima Kasih Telah Berkunjung</h1>
+
+    <div class="donor-section" data-aos="fade-up">
+        <h2 data-aos="fade-up">Profil Donatur</h2>
+        <div class="slider-container">
+            <div class="donor-card" data-aos="zoom-in">
+                <img data-src="donatur/donatur1.png" alt="Donatur 1" class="donor-img lazy">
+                <h4>Donatur 1</h4>
+                <p>Terima kasih atas dukungannya!</p>
+            </div>
+            <div class="donor-card" data-aos="zoom-in">
+                <img data-src="donatur/donatur2.png" alt="Donatur 2" class="donor-img lazy">
+                <h4>Donatur 2</h4>
+                <p>Terima kasih atas dukungannya!</p>
+            </div>
+            <div class="donor-card" data-aos="zoom-in">
+                <img data-src="donatur/donatur3.png" alt="Donatur 3" class="donor-img lazy">
+                <h4>Donatur 3</h4>
+                <p>Terima kasih atas dukungannya!</p>
+            </div>
+            <div class="donor-card" data-aos="zoom-in">
+                <img data-src="donatur/donatur4.png" alt="Donatur 4" class="donor-img lazy">
+                <h4>Donatur 4</h4>
+                <p>Terima kasih atas dukungannya!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="donorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h4 id="modalDonorName"></h4>
+            <img id="modalDonorImage" src="" alt="Donor Image" class="modal-img">
+            <p id="modalDonorMessage"></p>
+        </div>
+    </div>
+
+    <button id="back-to-top" title="Kembali ke Atas">↑</button>
+
+    <script>
+        // Particle Background using Canvas API
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const particleCount = 200;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.5})`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animate();
+
+        // Back to Top Button Functionality
+        const backToTopButton = document.getElementById("back-to-top");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 20) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        });
+
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    </script>
+
+    <script>
+        // Get the modal
+        const modal = document.getElementById("donorModal");
+
+        // Get the <span> element that closes the modal
+        const span = document.getElementsByClassName("close")[0];
+
+        // Get the modal content elements
+        const modalDonorName = document.getElementById("modalDonorName");
+        const modalDonorImage = document.getElementById("modalDonorImage");
+        const modalDonorMessage = document.getElementById("modalDonorMessage");
+
+        // Get all donor cards
+        const donorCards = document.querySelectorAll(".donor-card");
+
+        // Add click event to each donor card
+        donorCards.forEach(card => {
+            card.addEventListener("click", () => {
+                const donorName = card.querySelector("h4").innerText;
+                const donorImage = card.querySelector("img").src;
+                const donorMessage = card.querySelector("p").innerText;
+
+                modalDonorName.innerText = donorName;
+                modalDonorImage.src = donorImage;
+                modalDonorMessage.innerText = donorMessage;
+
+                modal.style.display = "block";
+            });
+        });
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+        document.addEventListener('mousemove', function (e) {
+            const cursor = document.createElement('div');
+            cursor.classList.add('cursor');
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            document.body.appendChild(cursor);
+
+            setTimeout(() => {
+                cursor.remove();
+            }, 500); // Remove the cursor element after the animation
+        });
+    </script>
+
+    <script>
+        AOS.init();
+    </script>
+
+    <script>
+        // Initialize LazyLoad
+        var lazyLoadInstance = new LazyLoad({
+            elements_selector: ".lazy"
+        });
+    </script>
+</body>
+
+</html>
